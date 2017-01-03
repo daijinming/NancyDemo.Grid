@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>DataGrid Pagination - jQuery EasyUI Demo</title>
+    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/icon.css">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="http://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
+    <script>
+        $(document).ready(function () {
+           
+            $('#tt').datagrid({
+
+                loadMsg: "数据加载中，请稍后……",
+                width: "100%",
+                height: 500,
+                method:"post",
+                singleSelect: true,
+                collapsible: true,
+                pagination: true,
+                rownumbers: true,//行号 
+                sortName: 'SortCode',
+                sortOrder: 'desc',
+                url: "/pagelist"
+            });
+
+            //设置分页控件 
+            var p = $('#tt').datagrid('getPager');
+            $(p).pagination({
+                pageSize: 10,//每页显示的记录条数，默认为10 
+                pageList: [5, 10, 15],//可以设置每页记录条数的列表 
+                beforePageText: '第',//页数文本框前显示的汉字 
+                afterPageText: '页    共 {pages} 页',
+                displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录'
+            });
+
+        });
+
+        function dateformatter(value) {
+
+            var dateValue = new Date(value);
+
+
+            var y = dateValue.getFullYear();
+            var m = dateValue.getMonth() + 1;
+            var d = dateValue.getDate();
+
+            return y + '年' + (m < 10 ? ('0' + m) : m) + '月' + (d < 10 ? ('0' + d) : d) + '日';
+        }
+        
+        function formatter_edit(val, row) {
+
+            var result = "<a href=\"#\">编辑</a>";
+            result += "|";
+            result += "<a href=\"#\">删除</a>";
+
+            return result;
+        }
+
+    </script>
+</head>
+<body>
+    <table id="tt" style="width:800px;height:550px"
+           title="Load Data" iconcls="icon-save"
+           rownumbers="true" pagination="true">
+        <thead>
+            <tr>
+                <th data-options="field:'code',width:100,align:'center'">
+                    代码
+                </th>
+                <th data-options="field:'fullName',width:100,align:'center'">
+                    名称
+                </th>
+                <th data-options="field:'sortCode',width:140,align:'center'">
+                    排序
+                </th>
+                <th data-options="field:'createDate',width:140,align:'center'" formatter="dateformatter">
+                    发布日期
+                </th>
+                <th data-options="field:'EDIT',width:100,align:'center'" formatter="formatter_edit">
+                    操作
+                </th>
+            </tr>
+        </thead>
+    </table>
+</body>
+</html>
